@@ -1,0 +1,55 @@
+PS C:\Users\anupk> D:
+PS D:\> cd D:\DevOps_Cloud\DevOps\Docker
+PS D:\DevOps_Cloud\DevOps\Docker> mkdir my-docker-app
+
+
+    Directory: D:\DevOps_Cloud\DevOps\Docker
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----         5/24/2026   2:56 PM                my-docker-app
+
+
+PS D:\DevOps_Cloud\DevOps\Docker> cd .\my-docker-app\
+PS D:\DevOps_Cloud\DevOps\Docker\my-docker-app> docker images
+                                                                                                                  i Info →   U  In Use
+IMAGE                                              ID             DISK USAGE   CONTENT SIZE   EXTRA
+ashokit/spring-boot-rest-api:latest                b428aab0b055        263MB         81.4MB    U
+docker/desktop-cloud-provider-kind:v0.5.0          4ad59ce20658        595MB          162MB    U
+docker/desktop-containerd-registry-mirror:v0.0.3   179a9ea3ae47       50.3MB         16.1MB    U
+envoyproxy/envoy:v1.36.4                           08acc53db6f4        248MB         62.1MB
+kindest/node:v1.34.3                               08497ee19eac       1.35GB          395MB    U
+my-node-app:latest                                 bbce2ed721d0       1.57GB          395MB    U
+PS D:\DevOps_Cloud\DevOps\Docker\my-docker-app> docker ps
+CONTAINER ID   IMAGE         COMMAND                  CREATED              STATUS              PORTS                                         NAMES
+bc8c172fe0a8   my-node-app   "docker-entrypoint.s…"   About a minute ago   Up About a minute   0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp   serene_pike
+PS D:\DevOps_Cloud\DevOps\Docker\my-docker-app> docker login
+Authenticating with existing credentials... [Username: anuppanigrahy]
+
+i Info → To login with a different account, run 'docker logout' followed by 'docker login'
+
+
+Login Succeeded
+PS D:\DevOps_Cloud\DevOps\Docker\my-docker-app> docker tag my-node-app anuppanigrahy/my-node-app:latest
+PS D:\DevOps_Cloud\DevOps\Docker\my-docker-app> docker push anuppanigrahy/my-node-app:latest
+The push refers to repository [docker.io/anuppanigrahy/my-node-app]
+79b2f47ad444: Pushed
+c6b30c3f1696: Pushed
+d3952b96aa2c: Pushed
+4ac54afafe8c: Pushed
+cda7f44f2bdd: Pushed
+e23f099911d6: Pushed
+3e6b9d1a9511: Pushed
+c7ab1703a223: Pushed
+3697be50c98b: Pushed
+461077a72fb7: Pushed
+eda15e08150b: Pushed
+98aaa4118583: Pushed
+37927ed901b1: Pushed
+latest: digest: sha256:bbce2ed721d0046acafe6c5837100822b35c45ecec6e2c39f4affd63a3421b8b size: 856
+PS D:\DevOps_Cloud\DevOps\Docker\my-docker-app> docker stop bc8c172fe0a87e8bdbfb842d75343ef5416ab587b311130d4d5cb72dfabed4e0
+bc8c172fe0a87e8bdbfb842d75343ef5416ab587b311130d4d5cb72dfabed4e0
+PS D:\DevOps_Cloud\DevOps\Docker\my-docker-app> docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+PS D:\DevOps_Cloud\DevOps\Docker\my-docker-app>
