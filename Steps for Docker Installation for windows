@@ -3,17 +3,18 @@ installing docker in windows :: https://copilot.microsoft.com/shares/S3ADGkU71Uf
 To install Docker on Windows, you’ll want to follow these steps — and since you already have the official Docker Docs tab open, you’re in the right place:
 
 🖥️ Steps to Install Docker Desktop on Windows
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Check prerequisites
-
+---------------------------
 Windows 10 (Pro/Enterprise, build 19045 or later) or Windows 11.
 
 Enable WSL 2 (Windows Subsystem for Linux) — you already have the Microsoft Learn guide open, which walks you through setting up Linux with WSL.
 
 Ensure virtualization is enabled in BIOS.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Download Docker Desktop 
 
-Download Docker Desktop
-
-From the Docker Docs installation page (the tab you have open), download the installer for Windows.
+From the Docker Docs installation page (the tab you have open), download the installer for Windows. -> https://docs.docker.com/desktop/setup/install/windows-install?utm_source=copilot.com
 
 Run the installer
 
@@ -37,6 +38,7 @@ bash
 docker --version
 docker run hello-world
 If you see the “Hello from Docker!” message, you’re good to go.
+----------------------------------------------------------------------------------------
 
 👉 Since you already have the WSL tutorial open, I’d recommend finishing that first — it ensures Docker runs smoothly with Linux containers. Once WSL 2 is set up, the Docker Desktop installation will be straightforward.
 
