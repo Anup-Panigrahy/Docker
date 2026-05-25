@@ -1,0 +1,126 @@
+PS C:\Users\anupk> D:
+PS D:\> cd D:\DevOps_Cloud\DevOps\Docker
+PS D:\DevOps_Cloud\DevOps\Docker> mkdir my-docker-app
+
+
+    Directory: D:\DevOps_Cloud\DevOps\Docker
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----         5/24/2026   2:56 PM                my-docker-app
+
+
+PS D:\DevOps_Cloud\DevOps\Docker> cd .\my-docker-app\
+PS D:\DevOps_Cloud\DevOps\Docker\my-docker-app> docker images
+                                                                                                                  i Info →   U  In Use
+IMAGE                                              ID             DISK USAGE   CONTENT SIZE   EXTRA
+ashokit/spring-boot-rest-api:latest                b428aab0b055        263MB         81.4MB    U
+docker/desktop-cloud-provider-kind:v0.5.0          4ad59ce20658        595MB          162MB    U
+docker/desktop-containerd-registry-mirror:v0.0.3   179a9ea3ae47       50.3MB         16.1MB    U
+envoyproxy/envoy:v1.36.4                           08acc53db6f4        248MB         62.1MB
+kindest/node:v1.34.3                               08497ee19eac       1.35GB          395MB    U
+my-node-app:latest                                 bbce2ed721d0       1.57GB          395MB    U
+PS D:\DevOps_Cloud\DevOps\Docker\my-docker-app> docker ps
+CONTAINER ID   IMAGE         COMMAND                  CREATED              STATUS              PORTS                                         NAMES
+bc8c172fe0a8   my-node-app   "docker-entrypoint.s…"   About a minute ago   Up About a minute   0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp   serene_pike
+PS D:\DevOps_Cloud\DevOps\Docker\my-docker-app> docker login
+Authenticating with existing credentials... [Username: anuppanigrahy]
+
+i Info → To login with a different account, run 'docker logout' followed by 'docker login'
+
+
+Login Succeeded
+PS D:\DevOps_Cloud\DevOps\Docker\my-docker-app> docker tag my-node-app anuppanigrahy/my-node-app:latest
+PS D:\DevOps_Cloud\DevOps\Docker\my-docker-app> docker push anuppanigrahy/my-node-app:latest
+The push refers to repository [docker.io/anuppanigrahy/my-node-app]
+79b2f47ad444: Pushed
+c6b30c3f1696: Pushed
+d3952b96aa2c: Pushed
+4ac54afafe8c: Pushed
+cda7f44f2bdd: Pushed
+e23f099911d6: Pushed
+3e6b9d1a9511: Pushed
+c7ab1703a223: Pushed
+3697be50c98b: Pushed
+461077a72fb7: Pushed
+eda15e08150b: Pushed
+98aaa4118583: Pushed
+37927ed901b1: Pushed
+latest: digest: sha256:bbce2ed721d0046acafe6c5837100822b35c45ecec6e2c39f4affd63a3421b8b size: 856
+PS D:\DevOps_Cloud\DevOps\Docker\my-docker-app> docker stop bc8c172fe0a87e8bdbfb842d75343ef5416ab587b311130d4d5cb72dfabed4e0
+bc8c172fe0a87e8bdbfb842d75343ef5416ab587b311130d4d5cb72dfabed4e0
+PS D:\DevOps_Cloud\DevOps\Docker\my-docker-app> docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+PS D:\DevOps_Cloud\DevOps\Docker\my-docker-app>
+-----------------------------------------------------------------------------------------
+Directory: D:\DevOps_Cloud\DevOps\Docker\my-docker-app
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---           5/24/2026  3:08 PM            128 Dockerfile
+-a---           5/24/2026  3:04 PM            131 package.json
+-a---           5/24/2026  2:59 PM            228 server.js
+
+PS D:\DevOps_Cloud\DevOps\Docker\my-docker-app> docker build -t my-node-app .
+ERROR: failed to connect to the docker API at npipe:////./pipe/dockerDesktopLinuxEngine; check if the path is correct and if the daemon is running: open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified.
+PS D:\DevOps_Cloud\DevOps\Docker\my-docker-app> docker build -t my-node-app .
+[+] Building 215.0s (11/11) FINISHED                                                                 docker:desktop-linux
+ => [internal] load build definition from Dockerfile                                                                 0.3s
+ => => transferring dockerfile: 167B                                                                                 0.1s
+ => [internal] load metadata for docker.io/library/node:18                                                           5.3s
+ => [auth] library/node:pull token for registry-1.docker.io                                                          0.0s
+ => [internal] load .dockerignore                                                                                    1.0s
+ => => transferring context: 2B                                                                                      0.2s
+ => [1/5] FROM docker.io/library/node:18@sha256:c6ae79e38498325db67193d391e6ec1d224d96c693a8a4d943498556716d3783   197.2s
+ => => resolve docker.io/library/node:18@sha256:c6ae79e38498325db67193d391e6ec1d224d96c693a8a4d943498556716d3783     0.4s
+ => => sha256:461077a72fb7fe40d34a37d6a1958c4d16772d0dd77f572ec50a1fdc41a3754d 446B / 446B                           0.3s
+ => => sha256:3697be50c98b9d071df4637e1d3491d00e7b9f3a732768c876d82309b3c5a145 1.25MB / 1.25MB                       0.9s
+ => => sha256:c6b30c3f16966552af10ac00521f60355b1fcfd46ac1c20b1038587e28583ce7 45.68MB / 45.68MB                    42.6s
+ => => sha256:cda7f44f2bddcc4bb7514474024b3f3705de00ddb6355a33be5ac7808e5b7125 3.32kB / 3.32kB                       1.1s
+ => => sha256:e23f099911d692f62b851cf49a1e93294288a115f5cd2d014180e4d3684d34ab 211.36MB / 211.36MB                 105.1s
+ => => sha256:79b2f47ad4443652b9b5cc81a95ede249fd976310efdbee159f29638783778c0 64.40MB / 64.40MB                    59.4s
+ => => sha256:37927ed901b1b2608b72796c6881bf645480268eca4ac9a37b9219e050bb4d84 24.02MB / 24.02MB                    29.0s
+ => => sha256:3e6b9d1a95114e19f12262a4e8a59ad1d1a10ca7b82108adcf0605a200294964 48.49MB / 48.49MB                    32.4s
+ => => extracting sha256:3e6b9d1a95114e19f12262a4e8a59ad1d1a10ca7b82108adcf0605a200294964                           16.2s
+ => => extracting sha256:37927ed901b1b2608b72796c6881bf645480268eca4ac9a37b9219e050bb4d84                            5.0s
+ => => extracting sha256:79b2f47ad4443652b9b5cc81a95ede249fd976310efdbee159f29638783778c0                           23.3s
+ => => extracting sha256:e23f099911d692f62b851cf49a1e93294288a115f5cd2d014180e4d3684d34ab                           74.0s
+ => => extracting sha256:cda7f44f2bddcc4bb7514474024b3f3705de00ddb6355a33be5ac7808e5b7125                            0.1s
+ => => extracting sha256:c6b30c3f16966552af10ac00521f60355b1fcfd46ac1c20b1038587e28583ce7                           14.1s
+ => => extracting sha256:3697be50c98b9d071df4637e1d3491d00e7b9f3a732768c876d82309b3c5a145                            0.2s
+ => => extracting sha256:461077a72fb7fe40d34a37d6a1958c4d16772d0dd77f572ec50a1fdc41a3754d                            0.1s
+ => [internal] load build context                                                                                    0.9s
+ => => transferring context: 609B                                                                                    0.6s
+ => [2/5] WORKDIR /app                                                                                               1.9s
+ => [3/5] COPY package*.json ./                                                                                      0.2s
+ => [4/5] RUN npm install                                                                                            3.9s
+ => [5/5] COPY . .                                                                                                   0.2s
+ => exporting to image                                                                                               1.6s
+ => => exporting layers                                                                                              0.7s
+ => => exporting manifest sha256:ed862eb97e97b4cfd73ff2cd1e668a2afc93a620c800733d28b14a0201ff2d8b                    0.0s
+ => => exporting config sha256:fff8d05a7b08399ffe8d788019afaf70cc09684ec924227e3b78609614fa4e3f                      0.0s
+ => => exporting attestation manifest sha256:165481e085bdbb1511f1a40dc230dd8d0b328525c2507453a2b03c45b8c5b029        0.1s
+ => => exporting manifest list sha256:bbce2ed721d0046acafe6c5837100822b35c45ecec6e2c39f4affd63a3421b8b               0.0s
+ => => naming to docker.io/library/my-node-app:latest                                                                0.0s
+ => => unpacking to docker.io/library/my-node-app:latest                                                             0.3s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/omqoeqwgc9p8nq1mh63duozot
+PS D:\DevOps_Cloud\DevOps\Docker\my-docker-app> docker images                
+                                                                                                      i Info →   U  In Use
+IMAGE                                              ID             DISK USAGE   CONTENT SIZE   EXTRA
+ashokit/spring-boot-rest-api:latest                b428aab0b055        263MB         81.4MB    U   
+docker/desktop-cloud-provider-kind:v0.5.0          4ad59ce20658        595MB          162MB    U   
+docker/desktop-containerd-registry-mirror:v0.0.3   179a9ea3ae47       50.3MB         16.1MB    U   
+envoyproxy/envoy:v1.36.4                           08acc53db6f4        248MB         62.1MB        
+kindest/node:v1.34.3                               08497ee19eac       1.35GB          395MB    U   
+my-node-app:latest                                 bbce2ed721d0       1.57GB          395MB        
+PS D:\DevOps_Cloud\DevOps\Docker\my-docker-app> docker run -p 3000:3000 my-node-app
+Server running on port 3000
+PS D:\DevOps_Cloud\DevOps\Docker\my-docker-app> pwd
+
+Path
+----
+D:\DevOps_Cloud\DevOps\Docker\my-docker-app
+
+PS D:\DevOps_Cloud\DevOps\Docker\my-docker-app> 
