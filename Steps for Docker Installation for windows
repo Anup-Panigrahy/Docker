@@ -1,0 +1,167 @@
+installing docker in windows :: https://copilot.microsoft.com/shares/S3ADGkU71UftdRnDhJ1iT
+
+To install Docker on Windows, you’ll want to follow these steps — and since you already have the official Docker Docs tab open, you’re in the right place:
+
+🖥️ Steps to Install Docker Desktop on Windows
+Check prerequisites
+
+Windows 10 (Pro/Enterprise, build 19045 or later) or Windows 11.
+
+Enable WSL 2 (Windows Subsystem for Linux) — you already have the Microsoft Learn guide open, which walks you through setting up Linux with WSL.
+
+Ensure virtualization is enabled in BIOS.
+
+Download Docker Desktop
+
+From the Docker Docs installation page (the tab you have open), download the installer for Windows.
+
+Run the installer
+
+Double-click the .exe file.
+
+During setup, select WSL 2 backend (recommended) instead of Hyper-V if prompted.
+
+Complete setup
+
+Restart your system if required.
+
+Launch Docker Desktop from the Start menu.
+
+The first time it runs, Docker will finalize integration with WSL 2.
+
+Verify installation
+
+Open PowerShell or Command Prompt and run:
+
+bash
+docker --version
+docker run hello-world
+If you see the “Hello from Docker!” message, you’re good to go.
+
+👉 Since you already have the WSL tutorial open, I’d recommend finishing that first — it ensures Docker runs smoothly with Linux containers. Once WSL 2 is set up, the Docker Desktop installation will be straightforward.
+
+Would you like me to give you a step-by-step checklist for enabling WSL 2 before you run the Docker installer, so you don’t miss any prerequisites?
+
+Would you like me to give you a step-by-step checklist for enabling WSL 2 before you run the Docker installer : yes
+Here’s a clear checklist to enable WSL 2 on Windows before installing Docker Desktop. This ensures Docker runs smoothly with Linux containers:
+
+01
+Enable WSL Feature
+Windows Subsystem for Linux must be turned on before installing Docker.
+
+Open PowerShell as Administrator
+
+Run: dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+
+Wait for confirmation message
+
+02
+Enable Virtual Machine Platform
+WSL 2 requires virtualization support.
+
+Still in PowerShell (Admin)
+
+Run: dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+
+Restart your computer after this step
+
+03
+Install WSL Update
+WSL 2 needs the latest kernel update package.
+
+Download from Microsoft site
+
+Go to: https://aka.ms/wsl2kernel
+
+Install the MSI package
+
+04
+Set WSL 2 as Default
+Ensure new Linux distributions use WSL 2.
+
+Open PowerShell
+
+Run: wsl --set-default-version 2
+
+Verify with: wsl --list --verbose
+
+05
+Install a Linux Distribution
+Docker Desktop integrates with Linux distros via WSL.
+-------------------------------------------- Docker Installation done in windows------------------------------------------
+-----------------------------------------------------------------------------------
+Below error we got post running docker commands , Fix also has been given on below.
+----------------------------------------------------------------------------------
+
+WSL integration with distro 'Ubuntu' unexpectedly stopped. Do you want to restart it?
+
+running wsl distro proxy in Ubuntu distro: running proxy: running wslexec: An error occurred while running the command. DockerDesktop/Wsl/ExecError: c:\windows\system32\wsl.exe -d ubuntu -u root -e /mnt/wsl/docker-desktop/docker-desktop-user-distro proxy --distro-name ubuntu --docker-desktop-root /mnt/wsl/docker-desktop <home>\appdata\local\programs\dockerdesktop\resources: exit status 1 (stderr: , stdout: , wslErrorCode: DockerDesktop/Wsl/ExecError) (output: <3>WSL (622 - Relay) ERROR: CreateProcessCommon:818: execvpe(/mnt/wsl/docker-desktop/docker-desktop-user-distro) failed: Permission denied) (wslConf: [boot]
+systemd=true
+
+[user]
+default=anupk
+)
+This error occurs because Docker Desktop is attempting to execute its proxy binary inside your Ubuntu WSL distribution, but the file or mount path (/mnt/wsl/docker-desktop/...) has lost its executable permissions or is encountering a conflict with WSL's metadata mounting.
+
+The core error is right here:
+
+execvpe(/mnt/wsl/docker-desktop/docker-desktop-user-distro) failed: Permission denied
+
+Here is a step-by-step guide to fix it, ordered from the easiest workaround to the most permanent solution.
+----------------------------------------------------------------------------------------------------------------------------
+Solution 1: The Quick Reset (Fixes temporary mounting glitche)
+Often, the virtual networks or shared mount paths between Docker and WSL get locked up. A clean restart of both services usually resolves this.
+
+Quit Docker Desktop completely (right-click the Docker icon in your system tray and select Quit Docker Desktop).
+
+Open Windows PowerShell or Command Prompt as an Administrator and shut down WSL completely:
+
+DOS
+wsl --shutdown
+Restart Docker Desktop. It will automatically spin up your Ubuntu WSL integration again.
+----------------------------------------------------------------------------------------------------------------------------
+Solution 2: Fix Executable Permissions Manually
+If the file permissions actually got altered, you can manually grant execution rights back to the Docker binaries from inside Ubuntu.
+
+Open your Ubuntu terminal.
+
+Run the following command to force-grant executable permissions to the Docker Desktop mount folder:
+
+Bash
+sudo chmod -R +x /mnt/wsl/docker-desktop/
+Restart Docker Desktop.
+---------------------------------------------------------------------------------------------------------------------------
+Solution 3: Fix WSL Mount Options (wsl.conf)
+------------------------------------------------
+If you have custom mount settings in your wsl.conf, it might be stripping away execution permissions (noexec) from shared Windows drives or custom mounts.
+
+In your Ubuntu terminal, open your configuration file:
+
+Bash
+sudo nano /etc/wsl.conf
+Check if you have an [automount] section. Ensure it allows standard metadata and execution permissions. It should look like this (or you can add it if it's missing):
+
+Ini, TOML
+[automount]
+enabled = true
+options = "metadata,exec"
+Save and exit (Ctrl + O, Enter, then Ctrl + X).
+
+Run wsl --shutdown in PowerShell and restart Docker Desktop.
+--------------------------------------------------------------------------------------------------------------------
+Solution 4: Clean Re-install of Docker WSL Components
+------------------------------------------------------------
+If the proxy binaries are corrupted, you can force Docker to recreate them by toggling the integration.
+
+Open Docker Desktop Settings (the gear icon).
+
+Navigate to Resources > WSL integration.
+
+Uncheck "Enable integration with my default WSL distro" and uncheck Ubuntu.
+
+Click Apply & restart.
+
+Once restarted, go back to the same menu, re-check Ubuntu, and click Apply & restart again.
+
+This forces Docker to re-inject clean, correctly-permissioned wrapper binaries back into your Ubuntu distribution.
+
